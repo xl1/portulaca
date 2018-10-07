@@ -103,19 +103,19 @@ const vList = new Vue({
             await vMenu.updateBranchName();
         },
         async load() {
-            const tasks = config.branches.map(async (branch) => {
+            const tasks = config.branches.map(async branch => {
                 const res = await git(
                     'log',
                     '-1',
                     '--date=iso',
                     '--pretty=format:{"commitHash":"%h","authorName":"%an","authorDate":"%ad"}',
-                    branch.name
+                    branch
                 ).then(r => r.json());
                 const branchesText = await git(
                     'log',
                     '--merges',
                     '--pretty=%s',
-                    `${config.defaultBranch}..${branch.name}`
+                    `${config.defaultBranch}..${branch}`
                 ).then(r => r.text());
                 const branches = branchesText.split('\n').map(line => {
                     let m;
@@ -128,11 +128,11 @@ const vList = new Vue({
                     return null;
                 }).filter(Boolean);
                 return {
-                    target: branch.name,
+                    target: branch,
                     commit: res.commitHash,
                     date: res.authorDate,
                     author: res.authorName,
-                    branches: Array.from(new Set(branches), name => ({ name }))
+                    branches: Array.from(new Set(branches))
                 };
             });
             this.items = await Promise.all(tasks);

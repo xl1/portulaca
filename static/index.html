@@ -20,12 +20,15 @@
                 <th>Operations</th>
             </tr>
             <tr v-for="item in items">
-                <td>{{ item.target }}</td>
-                <td>{{ item.commit }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.author }}</td>
+                <td><pt-link type="target" :value="item.target"></pt-link></td>
+                <td><pt-link type="commit" :value="item.commit"></pt-link></td>
+                <td><pt-link type="date" :value="item.date"></pt-link></td>
+                <td><pt-link type="author" :value="item.author"></pt-link></td>
                 <td>
-                    <a class="chip-branch" v-for="branch in item.branches">{{ branch.name }}</a>
+                    <pt-link
+                        class="chip-branch" type="branch"
+                        v-for="branch in item.branches"
+                        :value="branch.name"></pt-link>
                 </td>
                 <td>
                     <span class="button" @click="checkout(item.target)">Checkout</a>

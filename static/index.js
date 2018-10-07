@@ -21,6 +21,21 @@ function git(...args) {
     return res;
 }
 
+Vue.component('pt-link', {
+    props: ['type', 'value'],
+    render(h) {
+        if (typeof config.links[this.type] === 'function') {
+            const href = config.links[this.type](this.value);
+            if (href) {
+                return h('a', {
+                    attrs: { href, target: '_blank' }
+                }, this.value);
+            }
+        }
+        return h('span', this.value);
+    }
+});
+
 const vConsole = new Vue({
     el: '#console',
     data: {

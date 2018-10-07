@@ -2,14 +2,45 @@ import Vue from 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.esm.brows
 import config from './config';
 
 function git(...args) {
-    return fetch('/api/git', {
+    const res = fetch('/api/git', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
         },
         body: JSON.stringify({ args })
     });
+    vConsole.input('git ' + args.join(' '));
+    res.then(async r => {
+        const text = await r.clone().text();
+        if (r.status === 200) {
+            vConsole.output(text);
+        } else {
+            vConsole.error(text);
+        }
+    });
+    return res;
 }
+
+const vConsole = new Vue({
+    el: '#console',
+    data: {
+        collapsed: true,
+        lines: []
+    },
+    methods: {
+        add(content, type) {
+            this.lines.push({ content, class: `console-line-${type}` });
+            Vue.nextTick(() => {
+                this.$el.scrollTo(0, this.$el.scrollHeight);
+            });
+        },
+        input(text) {
+            this.add('$ ' + text.split('\n').join('\n> '), 'input');
+        },
+        output(content) { this.add(content, 'output'); },
+        error(content) { this.add(content, 'error'); }
+    }
+});
 
 const vMenu = new Vue({
     el: '#menu',

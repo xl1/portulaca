@@ -32,6 +32,9 @@
                 </td>
             </tr>
         </table>
+        <div id="console" class="console" :class="{ 'console-collapsed': collapsed }">
+            <div class="console-toggle" @click="collapsed = !collapsed">↕</div><div v-for="line in lines" :class="line.class">{{ line.content }}</div>
+        </div>
     </body>
     <script type="module" src="./index.js"></script>
 </html>

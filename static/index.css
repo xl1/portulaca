@@ -37,3 +37,40 @@ th, td {
     background-color: #cdf;
     cursor: pointer;
 }
+.console {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 500px;
+    background-color: black;
+    color: white;
+    padding: 0 9px 0;
+    white-space: pre-wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.console-collapsed {
+    height: 18px;
+    overflow: hidden;
+}
+.console-toggle {
+    position: sticky;
+    top: 0;
+    height: 18px;
+    text-align: center;
+    cursor: pointer;
+}
+.console-collapsed .console-toggle {
+    background-color: black;
+}
+.console-line-input {
+    color: white;
+}
+.console-line-output {
+    color: #aaa;
+}
+.console-line-error {
+    color: #c55;
+}

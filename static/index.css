@@ -1,5 +1,6 @@
 body {
     font-family: 'Consolas', monospace;
+    padding-bottom: 18px;
 }
 [v-cloak] {
     display: none;
@@ -10,6 +11,12 @@ tr th {
 }
 th, td {
     padding: 3px 9px;
+}
+.cell-date {
+    width: 26ch;
+}
+.cell-branches {
+    width: 50vw;
 }
 .chip-branch {
     display: inline-block;
@@ -38,7 +45,7 @@ th, td {
     cursor: pointer;
 }
 .console {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     box-sizing: border-box;

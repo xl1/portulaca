@@ -113,6 +113,7 @@ const vList = new Vue({
                 ).then(r => r.json());
                 const branchesText = await git(
                     'log',
+                    '--first-parent',
                     '--merges',
                     '--pretty=%s',
                     `${config.defaultBranch}..${branch}`

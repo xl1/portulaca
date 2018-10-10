@@ -12,6 +12,10 @@ app.use(bodyParser.json());
 app.use(express.static('static'));
 
 app.post('/api/git', (req, res) => {
+    if (req.headers['x-requested-with'] !== 'fetch') {
+        res.sendStatus(400);
+        return;
+    }
     const proc = child_process.spawn('git', req.body.args, {
         cwd: config.directory
     });

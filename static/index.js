@@ -5,7 +5,8 @@ function git(...args) {
     const res = fetch('/api/git', {
         method: 'POST',
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            'x-requested-with': fetch.name
         },
         body: JSON.stringify({ args })
     });

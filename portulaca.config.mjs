@@ -2,5 +2,9 @@ export default {
     directory: '',
     defaultBranch: 'master',
     branches: [],
-    links: {}
+    links: {
+        target() {},
+        commit() {},
+        branch() {}
+    }
 };

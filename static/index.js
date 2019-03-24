@@ -67,13 +67,9 @@ const vMenu = new Vue({
     methods: {
         sync() {
             return Promise.all([
-                this.fetch(),
                 this.updateBranchName(),
                 vList.load()
             ]);
-        },
-        fetch() {
-            return git('fetch').then(r => r.text());
         },
         async updateBranchName() {
             const res = await git('symbolic-ref', '--short', 'head');
@@ -86,10 +82,7 @@ const vMenu = new Vue({
         }
     },
     created() {
-        return Promise.all([
-            this.fetch(),
-            this.updateBranchName()
-        ]);
+        return this.updateBranchName();
     }
 });
 

@@ -105,20 +105,27 @@ const vList = new Vue({
         },
         async load() {
             const tasks = config.branches.map(async branch => {
-                const res = await git(
+                const res = {};
+                const ltsv = await git(
                     'log',
                     '-1',
                     '--date=iso',
-                    '--pretty=format:{"commitHash":"%h","authorName":"%an","authorDate":"%ad"}',
+                    '--pretty=format:commitHash:%h\tauthorDate:%ad\tauthorName:%an',
                     branch
-                ).then(r => r.json());
+                ).then(r => r.text());
+                ltsv.split('\t').forEach(e => {
+                    const idx = e.indexOf(':');
+                    res[e.slice(0, idx)] = e.slice(idx + 1);
+                });
+
                 const branchesText = await git(
                     'log',
                     '--first-parent',
                     '--merges',
-                    '--pretty=%s',
+                    '--pretty=format:%s',
                     `${config.defaultBranch}..${branch}`
                 ).then(r => r.text());
+
                 const branches = branchesText.split('\n').map(line => {
                     let m;
                     if (m = /branch '(.+?)'/.exec(line)) {
@@ -129,6 +136,7 @@ const vList = new Vue({
                     }
                     return null;
                 }).filter(Boolean);
+
                 return {
                     target: branch,
                     commit: res.commitHash,

@@ -92,9 +92,16 @@ const vList = new Vue({
         items: []
     },
     methods: {
-        async checkout(branch) {
-            await git('checkout', branch);
-            await vMenu.updateBranchName();
+        async showNoMerges(branch) {
+            vConsole.collapsed = false;
+            await git(
+                'log',
+                '--first-parent',
+                '--no-merges',
+                '--date=short',
+                '--pretty=format:%h %cd %s',
+                `${config.defaultBranch}..${branch}`
+            );
         },
         async load() {
             const tasks = config.branches.map(async branch => {
@@ -119,6 +126,14 @@ const vList = new Vue({
                     `${config.defaultBranch}..${branch}`
                 ).then(r => r.text());
 
+                const noMerges = await git(
+                    'rev-list',
+                    '--first-parent',
+                    '--no-merges',
+                    '--count',
+                    `${config.defaultBranch}..${branch}`
+                ).then(r => r.text());
+
                 const branches = branchesText.split('\n').map(line => {
                     let m;
                     if (m = /branch '(.+?)'/.exec(line)) {
@@ -135,7 +150,8 @@ const vList = new Vue({
                     commit: res.commitHash,
                     date: res.authorDate,
                     author: res.authorName,
-                    branches: Array.from(new Set(branches))
+                    branches: Array.from(new Set(branches)),
+                    noMerges: +noMerges
                 };
             });
             this.items = await Promise.all(tasks);

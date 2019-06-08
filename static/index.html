@@ -17,7 +17,6 @@
                 <th class="cell-date">Date</th>
                 <th>Author</th>
                 <th class="cell-branches">Merged branches</th>
-                <th>Action</th>
             </tr>
             <tr v-for="item in items">
                 <td><pt-link type="target" :value="item.target"></pt-link></td>
@@ -29,10 +28,8 @@
                         class="chip-branch" type="branch"
                         v-for="branch in item.branches"
                         :value="branch"></pt-link>
-                </td>
-                <td>
-                    <span class="button" @click="showNoMerges(item.target)" v-if="item.noMerges">
-                        Non-merge: {{ item.noMerges }}
+                    <a href="#" @click.prevent="showNoMerges(item.target)" v-if="item.noMerges">
+                        +{{ item.noMerges }} commits
                     </span>
                 </td>
             </tr>
